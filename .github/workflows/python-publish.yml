@@ -33,4 +33,4 @@ jobs:
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
         user: MuhammadAmir5670
-        password: pypi-AgENdGVzdC5weXBpLm9yZwIkZGFkOWFmMWMtN2FiOS00OTMzLWE3YzgtNzY2NTZkZWMxYThmAAJAeyJwZXJtaXNzaW9ucyI6IHsicHJvamVjdHMiOiBbInBzeC1kYXRhLXJlYWRlciJdfSwgInZlcnNpb24iOiAxfQAABiDAA8SN5T-ypDStF3mMrSKQMCh9zojBKlMeGA24Fw-KrA
+        password: pypi-AgEIcHlwaS5vcmcCJDIyMzM0YTdhLTcyZWEtNGI0Ni1iY2RmLWI5MTBhYmViODFmZAACQHsicGVybWlzc2lvbnMiOiB7InByb2plY3RzIjogWyJwc3gtZGF0YS1yZWFkZXIiXX0sICJ2ZXJzaW9uIjogMX0AAAYgoDjwL0XnczaOH8erSyoWpWE6ePoL2F72pxf4U_lzpnw
