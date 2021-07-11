@@ -4,9 +4,9 @@ with psx-data-reader, you can scrape the data of Pakistan stock exchange. psx-da
 ## Overview 
 The psx-data-reader was written with fast use in mind. It provides the following key features
 
-- can download all historical data till current date
-- can downalod data for of multiple companies in a single line of code
-- returns a `Pandas DataFrame` for the downloaded data
+- can scrape all historical data till current date
+- can scrape data for of multiple companies in a single line of code
+- returns a `Pandas DataFrame` for the scraped data
 - for better download speed, It does not request the complete data in a single network request rather it makes chunks of data to be downloaded and uses threads to open requests for different chunks of data, hence results in better speed
 
 In the following paragraphs, I am going to describe how you can get and use Scrapeasy for your own projects.
@@ -14,7 +14,7 @@ In the following paragraphs, I am going to describe how you can get and use Scra
 
 ## Installation
 
-To download psx-data-reader, either fork this github repo or simply use Pypi via pip.
+To get psx-data-reader, either fork this github repo or simply use Pypi via pip.
 
 ```bash
 $ pip install psx-data-reader
@@ -35,7 +35,7 @@ tickers = tickers()
 ```
 
 
-to download the data of **Siddiqsons Tin Plate Limited** we have pass its ticker (symbol) to the `stocks` method with proper start and end date. and it will return a DataFrame with the scraped data
+to scrape the data of **Silk Bank Limited** we have pass its ticker (symbol) to the `stocks` method with proper start and end date. and it will return a DataFrame with the scraped data
 
 ```
 data = stocks("SILK", start=datetime.date(2020, 1, 1), datetime.today())
