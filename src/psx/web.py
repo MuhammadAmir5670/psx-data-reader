@@ -32,7 +32,7 @@ class DataReader:
     def get_psx_data(self, symbol: str, dates: list) -> container:
         data = futures = []
         
-        with tqdm(len(dates)) as progressbar:
+        with tqdm(total=len(dates), desc="Downloading {}'s Data".format(symbol)) as progressbar:
 
             with ThreadPoolExecutor(max_workers=6) as executor:
                 for date in dates:
@@ -109,8 +109,4 @@ class DataReader:
 data_reader = DataReader()
 
 if __name__ == "__main__":
-    start_time = time.time()
-    data = data_reader.stocks(["SILK"], date(2021, 5, 1), date.today())
-    duration = time.time() - start_time
-    print(duration, "s", sep="")
-    print(data)
+    data = data_reader.stocks(["SILK", "PACE"], date(2021, 5, 1), date.today())
