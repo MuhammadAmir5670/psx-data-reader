@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as file:
 
 setup(
     name="psx-data-reader",                      # This is the name of the package
-    version="0.0.1",                             # The initial release version
+    version="0.0.2",                             # The initial release version
     license='MIT',                               # Chose a license from here: https://help.github.com/articles/licensing-a-repository
     description="Pakistan Stock Exchange's Data Downloader",
     long_description=long_description,
@@ -31,8 +31,8 @@ setup(
     ],                                      
 
     python_requires='>=3',                       # Minimum version requirement of the package
-    packages=find_packages(),         # List of all python modules to be installed
     package_dir={'': 'src'},                     # Directory of the source code of the package
+    packages=find_packages("src"),               # List of all python modules to be installed
     install_requires=[                           # Install other dependencies if any
         "pandas", 
         "tqdm", 

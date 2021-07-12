@@ -24,9 +24,9 @@ $ pip install psx-data-reader
 
 First, import stocks and tickers from psx
 
-``
+```
 from psx import stocks, tickers
-``
+```
 
 to get the information of all the companies in Pakistan stock Exchange....
 
