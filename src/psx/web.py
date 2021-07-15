@@ -1,6 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed, _base
-from bs4 import BeautifulSoup as parser
+from dateutil.relativedelta import relativedelta
 from pandas import DataFrame as container
+from bs4 import BeautifulSoup as parser
 from collections import defaultdict
 from datetime import datetime, date
 from typing import Union
@@ -57,7 +58,7 @@ class DataReader:
             return data[0]
 
         data = pd.concat(data, keys=tickers, names=["Ticker", "Date"])
-        return data
+        return data[start: end]
 
 
     def download(self, symbol: str, date: date):
@@ -83,10 +84,17 @@ class DataReader:
 
         return pd.DataFrame(stocks, columns=headers).set_index("TIME")
 
-    def daterange(self, start, end):
-        dates = pd.date_range(start=start, end=end, freq="M")
-        dates = dates.to_pydatetime()
-        dates = dates.tolist() if len(dates) else [start]
+    def daterange(self, start: date, end: date) -> list:
+        period = end - start
+        number_of_months = period.days // 30
+        current_date = datetime(start.year, start.month, 1)
+        dates = [current_date]
+
+        for month in range(number_of_months):
+            prev_date = dates[-1]
+            dates.append(prev_date + relativedelta(months=1))
+
+        dates = dates if len(dates) else [start]
         return dates
 
     def preprocess(self, data: list) -> pd.DataFrame:
@@ -109,4 +117,5 @@ class DataReader:
 data_reader = DataReader()
 
 if __name__ == "__main__":
-    data = data_reader.stocks(["SILK", "PACE"], date(2021, 5, 1), date.today())
+    data = data_reader.stocks(["SILK"], date(2021, 1, 7), date.today())
+    print(data)
