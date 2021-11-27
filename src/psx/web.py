@@ -51,14 +51,12 @@ class DataReader:
         tickers = [tickers] if isinstance(tickers, str) else tickers
         dates = self.daterange(start, end)
 
-        data = map(lambda ticker: self.get_psx_data(ticker, dates)[start: end], tickers)
-        data = list(data)
+        data = [self.get_psx_data(ticker, dates)[start: end] for ticker in tickers]
 
         if len(data) == 1:
             return data[0]
 
-        data = pd.concat(data, keys=tickers, names=["Ticker", "Date"])
-        return data[start: end]
+        return pd.concat(data, keys=tickers, names=["Ticker", "Date"])
 
 
     def download(self, symbol: str, date: date):
@@ -117,5 +115,5 @@ class DataReader:
 data_reader = DataReader()
 
 if __name__ == "__main__":
-    data = data_reader.stocks(["SILK"], date(2021, 1, 7), date.today())
+    data = data_reader.stocks(["SILK", "PACE"], date(2021, 1, 7), date.today())
     print(data)

@@ -45,7 +45,7 @@ tickers = tickers()
 to scrape the data of **Silk Bank Limited** we have pass its ticker (symbol) to the `stocks` method with proper start and end date. and it will return a DataFrame with the scraped data
 
 ```
-data = stocks("SILK", start=datetime.date(2020, 1, 1), datetime.today())
+data = stocks("SILK", start=datetime.date(2020, 1, 1), end=datetime.date.today())
 ```
 
 
@@ -53,7 +53,7 @@ we can also download the data of multiple companies in a single call to `stocks`
 
 
 ```
-data = stocks(["SILK", "PACE"], start=datetime.date(2020, 1, 1), datetime.today())
+data = stocks(["SILK", "PACE"], start=datetime.date(2020, 1, 1), end=datetime.date.today())
 ```
 
 and now the returned DataFrame object will have a hierarchical index on rows.
