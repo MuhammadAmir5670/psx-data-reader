@@ -108,7 +108,7 @@ class DataReader:
         data.Volume = data.Volume.str.replace(",", "")
         # coerce each column type to float
         for column in data.columns:
-            data[column] = data[column].astype(np.float64)
+            data[column] = data[column].str.replace(",", "").astype(np.float64)
         return data
 
 
