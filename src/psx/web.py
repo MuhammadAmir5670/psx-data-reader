@@ -12,9 +12,12 @@ import pandas as pd
 import numpy as np
 import requests
 import time
+from pdb import set_trace
 
 
 class DataReader:
+
+    headers = ['TIME', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
 
     def __init__(self):
         self.__history = "https://dps.psx.com.pk/historical"
@@ -70,17 +73,16 @@ class DataReader:
     def toframe(self, data):
         stocks = defaultdict(list)
         rows = data.select("tr")
-        headers = [header.getText() for header in data.select("th")]
 
         for row in rows:
             cols = [col.getText() for col in row.select("td")]
         
-            for key, value in zip(headers, cols):
+            for key, value in zip(self.headers, cols):
                 if key == "TIME":
                     value = datetime.strptime(value, "%b %d, %Y")
                 stocks[key].append(value)
 
-        return pd.DataFrame(stocks, columns=headers).set_index("TIME")
+        return pd.DataFrame(stocks, columns=self.headers).set_index("TIME")
 
     def daterange(self, start: date, end: date) -> list:
         period = end - start
@@ -115,5 +117,4 @@ class DataReader:
 data_reader = DataReader()
 
 if __name__ == "__main__":
-    data = data_reader.stocks(["SILK", "PACE"], date(2021, 1, 7), date.today())
-    print(data)
+    data = data_reader.stocks("OGDC", date(2018, 12, 10), date(2019, 12, 10))
