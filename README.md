@@ -58,6 +58,13 @@ data = stocks(["SILK", "PACE"], start=datetime.date(2020, 1, 1), end=datetime.da
 
 and now the returned DataFrame object will have a hierarchical index on rows.
 
+## Example Graph
+
+<img src ="images/newplot-2.png">
+<img src ="images/newplot-3.png">
+<img src ="images/newplot-4.png">
+<img src ="images/newplot-5.png">
+
 
 ## Author Info
 <p align="left">
