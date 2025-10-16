@@ -12,12 +12,9 @@ import pandas as pd
 import numpy as np
 import requests
 import time
-from pdb import set_trace
 
 
 class DataReader:
-
-    headers = ['TIME', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
 
     def __init__(self):
         self.__history = "https://dps.psx.com.pk/historical"
@@ -70,19 +67,47 @@ class DataReader:
             data = self.toframe(data)
         return data
 
+    # def toframe(self, data):
+    #     stocks = defaultdict(list)
+    #     rows = data.select("tr")
+    #     headers = [header.getText() for header in data.select("th")]
+
+    #     for row in rows:
+    #         cols = [col.getText() for col in row.select("td")]
+        
+    #         for key, value in zip(headers, cols):
+    #             if key.lower() in ("time", "date"):
+    #                 value = datetime.strptime(value, "%b %d, %Y")
+    #             stocks[key].append(value)
+
+    #     date_col = next(c for c in headers if c.lower() in ("time", "date"))
+    #     return pd.DataFrame(stocks, columns=headers).set_index(date_col)
+
     def toframe(self, data):
         stocks = defaultdict(list)
-        rows = data.select("tr")
 
+        # Extract rows and headers (strip whitespace)
+        rows    = data.select("tr")
+        headers = [h.get_text(strip=True) for h in data.select("th")]
+
+        # Parse each row
         for row in rows:
-            cols = [col.getText() for col in row.select("td")]
-        
-            for key, value in zip(self.headers, cols):
-                if key == "TIME":
+            cols = [td.get_text(strip=True) for td in row.select("td")]
+            if len(cols) != len(headers):
+                continue  # skip incomplete rows
+
+            for key, value in zip(headers, cols):
+                if key.lower() in ("time", "date"):
+                    # PSX uses format like “Jun 26, 2025”
                     value = datetime.strptime(value, "%b %d, %Y")
                 stocks[key].append(value)
 
-        return pd.DataFrame(stocks, columns=self.headers).set_index("TIME")
+        # Pick whichever header exists: “Date” or old “TIME”
+        date_col = next(h for h in headers if h.lower() in ("time", "date"))
+
+        # Build DataFrame and set the date index
+        return pd.DataFrame(stocks, columns=headers).set_index(date_col)
+
 
     def daterange(self, start: date, end: date) -> list:
         period = end - start
@@ -97,24 +122,47 @@ class DataReader:
         dates = dates if len(dates) else [start]
         return dates
 
+    # def preprocess(self, data: list) -> pd.DataFrame:
+    #     # concatenate each frame to a single dataframe
+    #     data = pd.concat(data)
+    #     # sort the data by date
+    #     data = data.sort_index()
+    #     # change indexes from all uppercase to title
+    #     data = data.rename(columns=str.title)
+    #     # change index label Title to Date
+    #     data.index.name = "Date"
+    #     # remove non-numeric characters from volume column 
+    #     data.Volume = data.Volume.str.replace(",", "")
+    #     # coerce each column type to float
+    #     for column in data.columns:
+    #         data[column] = data[column].str.replace(",", "").astype(np.float64)
+    #     return data
+
     def preprocess(self, data: list) -> pd.DataFrame:
-        # concatenate each frame to a single dataframe
+        # 1) Concatenate month-by-month slices
         data = pd.concat(data)
-        # sort the data by date
+
+        # 2) Sort by date index
         data = data.sort_index()
-        # change indexes from all uppercase to title
+
+        # 3) Normalize column names (title-case) and rename index
         data = data.rename(columns=str.title)
-        # change index label Title to Date
         data.index.name = "Date"
-        # remove non-numeric characters from volume column 
-        data.Volume = data.Volume.str.replace(",", "")
-        # coerce each column type to float
-        for column in data.columns:
-            data[column] = data[column].str.replace(",", "").astype(np.float64)
+
+        # 4) Clean and cast each column
+        for col in data.columns:
+            # strip commas everywhere
+            series = data[col].str.replace(",", "")
+            if col == "Change (%)":
+                # remove percent sign before casting
+                series = series.str.replace("%", "")
+            data[col] = series.astype(np.float64)
+
         return data
 
 
 data_reader = DataReader()
 
 if __name__ == "__main__":
-    data = data_reader.stocks("OGDC", date(2018, 12, 10), date(2019, 12, 10))
+    data = data_reader.stocks(["SILK", "PACE"], date(2021, 1, 7), date.today())
+    print(data)
