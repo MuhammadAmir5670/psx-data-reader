@@ -90,3 +90,5 @@ and now the returned DataFrame object will have a hierarchical index on rows.
 <!-- Security scan triggered at 2025-09-28 15:21:44 -->
 
 <!-- Security scan triggered at 2025-10-08 08:55:17 -->
+
+<!-- Security scan triggered at 2025-11-24 23:36:26 -->
