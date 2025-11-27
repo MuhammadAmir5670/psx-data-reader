@@ -17,7 +17,7 @@ from pdb import set_trace
 
 class DataReader:
 
-    headers = ['TIME', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
+    headers = ['DATE', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME']
 
     def __init__(self):
         self.__history = "https://dps.psx.com.pk/historical"
@@ -78,11 +78,11 @@ class DataReader:
             cols = [col.getText() for col in row.select("td")]
         
             for key, value in zip(self.headers, cols):
-                if key == "TIME":
+                if key == "DATE":
                     value = datetime.strptime(value, "%b %d, %Y")
                 stocks[key].append(value)
 
-        return pd.DataFrame(stocks, columns=self.headers).set_index("TIME")
+        return pd.DataFrame(stocks, columns=self.headers).set_index("DATE")
 
     def daterange(self, start: date, end: date) -> list:
         period = end - start
